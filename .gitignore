@@ -1,40 +1,31 @@
-# Dependencies
-node_modules/
-/frontend/node_modules/
-/backend/node_modules/
-
-# Environment variables
+# Root level environment variables
 .env
 
-# Build outputs
-/frontend/build/
-/frontend/dist/
-/backend/build/
-/backend/dist/
+# Backend Python specific
+backend/**/__pycache__/
+backend/**/*.py[cod]
+backend/**/*$py.class
+backend/**/*.so
+backend/.Python
+backend/env/
+backend/venv/
+backend/.env/
+backend/ENV/
+backend/.venv
+backend/dist/
+backend/*.egg-info/
+backend/.installed.cfg
+backend/*.egg
 
-# Python
-/backend/__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
+# Frontend
+frontend/node_modules/
+frontend/build/
+frontend/dist/
 
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# IDE and editor files
-.idea/
-.vscode/
-*.swp
-*.swo
-.DS_Store
-Thumbs.db
-
-# Cache directories
-.npm
-.eslintcache
-.cache
-
-package-lock.json
+# Common
+**/node_modules/
+**/.DS_Store
+**/.idea/
+**/.vscode/
+**/logs
+**/*.log
