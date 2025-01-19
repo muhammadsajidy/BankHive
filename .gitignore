@@ -13,7 +13,7 @@ node_modules/
 /backend/dist/
 
 # Python
-__pycache__/
+/backend/__pycache__/
 *.py[cod]
 *$py.class
 *.so
