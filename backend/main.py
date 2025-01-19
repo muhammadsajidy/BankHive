@@ -2,11 +2,19 @@ from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from bson.json_util import dumps
 from json import loads
+from requests import request
 import os
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=['*']
+)
 
 load_dotenv()
 
@@ -34,9 +42,11 @@ async def get_bank_details(bank_name: str):
     try:
         data = fetchBankDetails(bank_name)
         if data:
-            print(data)
-            return data
+            return data 
         raise HTTPException(status_code=404, detail="Bank not found")
     except Exception as e:
         return {"Error": str(e)}
-
+    
+@app.get('/bank/{bank_name}/{city_name}')
+async def get_bank_details_city(bank_name: str, city_name: str):
+    return

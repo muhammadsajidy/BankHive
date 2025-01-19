@@ -2,10 +2,10 @@
 .env
 
 # Backend Python specific
-backend/**/__pycache__/
-backend/**/*.py[cod]
-backend/**/*$py.class
-backend/**/*.so
+backend/__pycache__/
+backend/*.py[cod]
+backend/*$py.class
+backend/*.so
 backend/.Python
 backend/env/
 backend/venv/
