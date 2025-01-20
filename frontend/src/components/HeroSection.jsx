@@ -21,7 +21,7 @@ export default function HeroSection() {
         })
         .then(res => res.json())
         .then(data => {
-            setBankList(banks => [...banks, ...data.slice(0, 5)]);
+            setBankList([...data.slice(0, 5)]);
             setLoading(false);
         })
         .catch(e => console.error(e))
@@ -73,7 +73,11 @@ export default function HeroSection() {
                                 <p><strong>BRANCH: </strong>{bank.BRANCH}</p>
                                 <p><strong>ADDRESS: </strong>{bank.ADDRESS}</p>
                                 <p><strong>DISTRICT: </strong>{bank.DISTRICT}</p>
-                                <p><strong>IFSC: </strong>{bank.IFSC}</p> 
+                                <p><strong>STATE: </strong>{bank.STATE}</p>
+                                <p><strong>ISO 3166: </strong>{bank.ISO3166}</p>
+                                <p><strong>IFSC: </strong>{bank.IFSC}</p>
+                                <p><strong>NEFT: </strong>{bank.NEFT ? "Yes" : "No"}</p>
+                                <p><strong>IMPS: </strong>{bank.IMPS ? "Yes" : "No"}</p>
                             </div>
                         )
                     })}

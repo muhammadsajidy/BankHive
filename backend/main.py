@@ -5,7 +5,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from bson.json_util import dumps
 from json import loads
-from requests import request
+from urllib.parse import quote
+import requests
 import os
 
 app = FastAPI()
@@ -29,9 +30,6 @@ def fetch_bank_details(bank_name):
             return loads(dumps(responses))
     except Exception as e:
         raise Exception(f"The following error occurred: {e}")
-
-def fetchCoordinates(address):
-    return
 
 @app.get('/', status_code=200)
 async def root():
@@ -57,3 +55,14 @@ async def get_bank_details_city(bank_name: str, city_name: str):
         raise HTTPException(status_code=404, detail="No Banks Found In This City")
     except Exception as e:
         return {"Error": str(e)}
+    
+@app.get('/location/{address}')
+def get_bank_coordinates(address):
+    response = requests.get(
+    "https://maps.googleapis.com/maps/api/geocode/json",
+    params={"address": address, "key": os.getenv("GOOGLE_MAPS_API")},
+    headers={"Content-type": "application/json"}
+    ).json()
+    if response["status"] == "OK" and len(response["results"]) > 0:
+        location = response['results'][0]['geometry']['location']
+        return location
