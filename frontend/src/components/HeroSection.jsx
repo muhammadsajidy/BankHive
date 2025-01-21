@@ -13,7 +13,7 @@ export default function HeroSection() {
             setLoading(false);
             return;
         }
-        fetch(`http://127.0.0.1:8000/bank/${bankName}`, {
+        fetch(`http://127.0.0.1:8000/bank/${bankName}?limit=5`, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json'
@@ -21,7 +21,7 @@ export default function HeroSection() {
         })
         .then(res => res.json())
         .then(data => {
-            setBankList([...data.slice(0, 5)]);
+            setBankList(data);
             setLoading(false);
         })
         .catch(e => console.error(e))
