@@ -5,7 +5,6 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from bson.json_util import dumps
 from json import loads
-from urllib.parse import quote
 import requests
 import os
 
@@ -19,15 +18,19 @@ app.add_middleware(
 
 load_dotenv()
 
-def fetch_bank_details(bank_name, start):
+MONGODB_URI = os.getenv("MONGODB_URI")
+GOOGLE_MAPS_API = os.getenv("GOOGLE_MAPS_API")
+
+def fetch_bank_details(query, start):
     try:
-        with MongoClient(os.getenv("MONGODB_URI"), server_api=ServerApi('1')) as client:
+        with MongoClient(MONGODB_URI, server_api=ServerApi('1')) as client:
             database = client["bank-details"]
             collection = database["Bank-Data"]
-            responses = list(collection.find({ "BANK":bank_name }).skip(start).limit(10))
+            responses = list(collection.find(query).skip(start).limit(50))
+            count = collection.count_documents(query)
             for response in responses:
                 response["_id"] = str(response["_id"])
-            return loads(dumps(responses))
+            return loads(dumps(responses)), count
     except Exception as e:
         raise Exception(f"The following error occurred: {e}")
 
@@ -38,22 +41,19 @@ async def root():
 @app.get('/bank/{bank_name}')
 async def get_bank_details(bank_name: str, start: int = Query(10, ge=0, le=100000)):
     try:
-        bank_details = fetch_bank_details(bank_name, start)
+        bank_details, count = fetch_bank_details({"BANK":bank_name}, start)
         if bank_details:
-            return bank_details
+            return [bank_details, count]
         raise HTTPException(status_code=404, detail="Bank not found")
     except Exception as e:
         return {"Error": str(e)}
     
-# Need to rework on this endpoint because of some changes mad in fetch_bank_details() method
 @app.get('/bank/{bank_name}/{city_name}')
 async def get_bank_details_city(bank_name: str, city_name: str, start: int = Query(10, ge=0, le=1000)):
     try:
-        bank_details = fetch_bank_details(bank_name, start)
-        bank_in_city = [bank for bank in bank_details if bank["CITY"] == city_name.upper()]
-        print(bank_in_city)
-        if bank_in_city:
-            return bank_in_city
+        bank_details, count = fetch_bank_details({"BANK":bank_name, "CITY":city_name.upper()}, start)
+        if bank_details:
+            return [bank_details, count]
         raise HTTPException(status_code=404, detail="No Banks Found In This City")
     except Exception as e:
         return {"Error": str(e)}
@@ -63,11 +63,11 @@ def get_bank_coordinates(address):
     try:
         response = requests.get(
         "https://maps.googleapis.com/maps/api/geocode/json",
-        params={"address": address, "key": os.getenv("GOOGLE_MAPS_API")},
+        params={"address": address, "key": GOOGLE_MAPS_API},
         headers={"Content-type": "application/json"}
         ).json()
         if response["status"] == "OK" and len(response["results"]) > 0:
             return response['results'][0]['geometry']['location']
         raise HTTPException(status_code=404, detail="Unable to get coordinates for the given address")
-    except Exception as e:
-        return {"Error": str(e)}
+    except Exception:
+        return {"Error": "Unable to fetch"}

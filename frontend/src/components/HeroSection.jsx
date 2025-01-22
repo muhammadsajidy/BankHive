@@ -21,7 +21,7 @@ export default function HeroSection() {
         })
         .then(res => res.json())
         .then(data => {
-            setBankList(data);
+            setBankList(data[0]);
             setLoading(false);
         })
         .catch(e => console.error(e))
