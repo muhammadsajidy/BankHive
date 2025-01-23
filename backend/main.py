@@ -13,7 +13,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=['*'],
     allow_credentials=True,
-    allow_methods=['*']
+    allow_methods=['*'],
+    allow_headers=["*"],
 )
 
 load_dotenv()
@@ -56,7 +57,7 @@ async def get_bank_details_city(bank_name: str, city_name: str, start: int = Que
             return [bank_details, count]
         raise HTTPException(status_code=404, detail="No Banks Found In This City")
     except Exception as e:
-        return {"Error": str(e)}
+        return {"Error":str(e)}
     
 @app.get('/location/{address}')
 def get_bank_coordinates(address):
@@ -68,6 +69,6 @@ def get_bank_coordinates(address):
         ).json()
         if response["status"] == "OK" and len(response["results"]) > 0:
             return response['results'][0]['geometry']['location']
-        raise HTTPException(status_code=404, detail="Unable to get coordinates for the given address")
+        raise HTTPException(status_code=500, detail=f"Error from Google API: {response}")
     except Exception:
         return {"Error": "Unable to fetch"}

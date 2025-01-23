@@ -4,9 +4,10 @@ import CoordinateContext from "./CoordinateContext";
 
 const CoordinateContextProvider = ({ children }) => {
     const [coordinate, setCoordinate] = useState({"lat": 0, "lng": 0});
+    const [address, setAddress] = useState('');
 
     return(
-        <CoordinateContext.Provider value={{ coordinate, setCoordinate }}>
+        <CoordinateContext.Provider value={{ coordinate, setCoordinate, address, setAddress }}>
             {children}
         </CoordinateContext.Provider>
     );
