@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import BankDetails from "./pages/BankDetails";
+import About from "./pages/About";
+import APIDocs from "./pages/APIDocs";
 
 export default function App() {
   return (
@@ -11,6 +13,8 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />}/>
           <Route path="/search" element={<BankDetails />}/>
+          <Route path="/about" element={<About />}/>
+          <Route path="/apidocs" element={<APIDocs />}/>
         </Routes>
       </BrowserRouter>
     </>

@@ -13,10 +13,15 @@ export default function BankInfo() {
     const {setCoordinate} = useContext(CoordinateContext);
     const {setAddress} = useContext(CoordinateContext);
 
-    const handleBankDetails = () => {
+    function handleBankDetails() {
         setLoading(true);
         setError('');
-        fetch(`http://127.0.0.1:8000/bank/${bankName}?start=${start}`, {
+        
+        const url = cityName ? 
+        `http://127.0.0.1:8000/bank/${bankName}/${cityName}?start=${start}` :
+        `http://127.0.0.1:8000/bank/${bankName}?start=${start}`;
+        
+        fetch(url, {
             method: 'GET',
             headers: {
                 'Content-type': 'application/json'
@@ -36,30 +41,7 @@ export default function BankInfo() {
         })
     };
 
-    const handleBankDetailsCity = () => {
-        setLoading(true);
-        setError('');
-        fetch(`http://127.0.0.1:8000/bank/${bankName}/${cityName}?start=${start}`, {
-            method: 'GET',
-            headers: {
-                'Content-type': 'application/json'
-            },
-            signal: AbortSignal.timeout(7000)
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (data[0].length === 0) setError('No results found. Make sure you spelled it right');
-            setBankDetails(data[0]);
-            setBankCount(data[1]);
-            setLoading(false);
-        })
-        .catch(() => {
-            setError('Failed to fetch bank details. Please try again.');
-            setLoading(false);
-        })
-    };
-
-    const handleBranchCoordinates = (address) => {
+    function handleBranchCoordinates(address) {
         fetch(`http://127.0.0.1:8000/location/${encodeURIComponent(address)}`, {
             method: 'GET',
             headers: {
@@ -69,14 +51,13 @@ export default function BankInfo() {
         })
         .then(res => res.json())
         .then(data => {
-            if (!isNaN(data.lat) && !isNaN(data.lng)) {
-                setCoordinate(data);
-            } else setCoordinate({"lat": 0, "lng": 0})
+            if (!isNaN(data.lat) && !isNaN(data.lng)) setCoordinate(data);
+            else setCoordinate({"lat": 0, "lng": 0})
         })
         .catch(e => console.error(e));
     };
 
-    const handleReset = () => {
+    function handleReset() {
         setLoading(false);
         setError('');
         setBankName('');
@@ -87,42 +68,52 @@ export default function BankInfo() {
         setBankCount(0);
         setPageNo(1);
         setStart(0);
-    }
+        setCoordinate({"lat": 0, "lng": 0});
+    };
+
 
     return (
         <div className="sm:w-[90%] lg:w-[47%] h-[85vh] flex flex-col items-center font-montserrat">
-            <div className="bg-white sm:h-fit lg:h-12 w-[100%] border-[1.5px] border-black flex flex-row justify-center items-center py-2">
-                <div className="sm:w-[80%] lg:w-[70%] flex sm:flex-wrap lg:flex-row lg:justify-between gap-2">
-                    <input 
-                    id="bank-name"
-                    type="text" 
-                    className="bg-none border-[1px] border-black outline-none h-8 px-1 py-1 ml-1 text-sm w-[95%] lg:w-[48%]" 
-                    placeholder="Bank Name"
-                    onChange={(e) => setBankName(e.target.value)}
-                    />
-                    <input 
-                    id="city-name"
-                    type="text" 
-                    className="bg-none border-[1px] border-black outline-none h-8 px-1 py-1 ml-1 text-sm w-[95%] lg:w-[48%]" 
-                    placeholder="City (optional)"
-                    onChange={(e) => setCityName(e.target.value)}
-                    />
+            <div className="bg-white sm:h-fit lg:h-12 w-[100%] border-[1.5px] border-black flex flex-row justify-center items-center py-2 px-1">
+                <div className="sm:w-[80%] lg:w-[80%] flex sm:flex-wrap lg:flex-row lg:justify-between gap-1">
+                    <div className="w-[95%] lg:w-[48%] flex">
+                        <input 
+                        id="bank-name"
+                        type="text" 
+                        className="bg-none border-[1px] border-black outline-none h-8 px-1 py-1 ml-1 text-sm rounded-md sm:w-[90%]" 
+                        placeholder="Bank Name"
+                        onChange={(e) => setBankName(e.target.value)}
+                        />
+                        <button
+                        className="ml-1 h-8 bg-black text-white px-2 rounded-md"
+                        onClick={() => {document.getElementById('bank-name').value = '';setBankName('')}}
+                        disabled={!bankName}
+                        >X</button>
+                    </div>
+                    <div className="w-[95%] lg:w-[48%] flex">
+                        <input 
+                        id="city-name"
+                        type="text" 
+                        className="bg-none border-[1px] border-black outline-none h-8 px-1 py-1 ml-1 text-sm rounded-md sm:w-[90%]" 
+                        placeholder="City (optional)"
+                        onChange={(e) => {setCityName(e.target.value);}}
+                        />
+                        <button
+                        className="ml-1 h-8 bg-black text-white px-2 rounded-md"
+                        onClick={() => {document.getElementById('city-name').value = '';setCityName('')}}
+                        disabled={!cityName}
+                        >X</button>
+                    </div>
                 </div>
-                <div className="sm:w-[20%] lg:w-[30%] flex flex-wrap gap-1 justify-center">
+                <div className="sm:w-[20%] lg:w-[20%] flex flex-wrap gap-1 justify-center">
                     <button 
                     className="sm:px-1 lg:px-2 h-8 bg-black text-white mr-[2px] sm:text-sm lg:text-md rounded-md sm:w-20 lg:w-auto"
                     onClick={handleBankDetails}
                     disabled={loading || !bankName}
-                    >Search</button>
-                    <button 
-                    className="sm:px-1 lg:px-2 h-8 bg-black text-white mr-[2px] sm:text-sm lg:text-md rounded-md sm:w-20 lg:w-auto"
-                    onClick={handleBankDetailsCity}
-                    disabled={loading || !cityName}
-                    >Filter</button>
+                    >Search</button> 
                     <button 
                     className="sm:px-1 lg:px-2 h-8 bg-black text-white mr-[2px] sm:text-sm lg:text-md rounded-md sm:w-20 lg:w-auto"
                     onClick={handleReset}
-                    disabled={!bankName || !cityName}
                     >R</button>
                 </div>
             </div>
@@ -173,7 +164,7 @@ export default function BankInfo() {
                     onClick={() => {
                         if (pageNo > 1) setPageNo(pageNo-1)
                         setStart(start-50)
-                        cityName !== '' ? handleBankDetailsCity() : handleBankDetails()
+                        handleBankDetails();
                     }}
                     disabled={pageNo===1}
                     >{`<<<`}</button>
@@ -183,7 +174,7 @@ export default function BankInfo() {
                     onClick={() => {
                         if (pageNo <= bankCount/50) setPageNo(pageNo+1) 
                         setStart(start+50)
-                        cityName !== '' ? handleBankDetailsCity() : handleBankDetails()
+                        handleBankDetails()
                     }}
                     disabled={pageNo==Math.ceil(bankCount/50)}
                     >{`>>>`}</button>
