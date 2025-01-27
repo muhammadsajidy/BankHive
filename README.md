@@ -1,6 +1,5 @@
 # BankHive
 
-## Overview
 This project is a comprehensive database for Indian banks that contains detailed information about their branches, including:
 - **Branch Names**
 - **Addresses**
