@@ -1,3 +1,3 @@
 # BankHive
-A database for Indian Banks which contains details like branches, their addresses, contact numbers, IFSC code, etc.\
-(Not Completed Yet.....)
+BankHive is a comprehensive database website for Indian Banks such as Canara Bank, State Bank of India, etc., which contains details like branches, their addresses, contact numbers, IFSC code, etc.\
+
