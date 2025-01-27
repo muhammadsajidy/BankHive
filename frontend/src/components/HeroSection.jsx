@@ -7,7 +7,7 @@ export default function HeroSection() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    const handleBankDetails = () => {
+    function handleBankDetails() {
         setLoading(true);
         if (!bankName) {
             alert("Please enter a bank name");
@@ -28,6 +28,14 @@ export default function HeroSection() {
         })
         .catch(() => setError('Unable to fetch bank details. Please check if you spelled it correctly'));
     };
+
+    function handleReset() {
+        setBankName('');
+        setBankList([]);
+        document.getElementById('bank-name').value = '';
+        setLoading(false);
+        setError('');
+    }
 
     return (
         <div className="h-screen w-screen font-raleway flex sm:flex-col lg:flex-row sm:justify-center sm:items-center text-[#424874]">
@@ -86,7 +94,7 @@ export default function HeroSection() {
                 (<div className="mt-10 mb-10 sm:w-[90%] lg:w-[70%] max-h-60 overflow-y-auto scrollbar-hide bg-white border-[1.2px] border-black px-2 rounded-md shadow-[3px_5px_0px_#000000]">
                     {bankList.map((bank) => {
                         return (
-                            <div key={bank._id} className="w-[100%] px-2 py-3 my-2 border-[1px] border-gray-500 text-sm font-montserrat rounded-md">
+                            <div key={bank._id} className="w-[100%] px-2 py-3 my-2 border-[1px] border-gray-500 text-sm text-black font-montserrat rounded-md">
                                 <p><strong>BANK: </strong>{bank.BANK}</p>
                                 <p><strong>BRANCH: </strong>{bank.BRANCH}</p>
                                 <p><strong>ADDRESS: </strong>{bank.ADDRESS}</p>

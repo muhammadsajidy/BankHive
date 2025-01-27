@@ -85,10 +85,10 @@ export default function BankInfo() {
                         onChange={(e) => setBankName(e.target.value)}
                         />
                         <button
-                        className="ml-1 h-8 bg-black text-white px-2 rounded-md"
-                        onClick={() => {document.getElementById('bank-name').value = '';setBankName('')}}
+                        className="ml-1 h-8 bg-black text-white px-2 rounded-md disabled:pointer-events-none hover:bg-[#DCD6F7] hover:text-black border-2 border-black"
+                        onClick={handleReset}
                         disabled={!bankName}
-                        >X</button>
+                        ><strong>X</strong></button>
                     </div>
                     <div className="w-[95%] lg:w-[48%] flex">
                         <input 
@@ -96,23 +96,24 @@ export default function BankInfo() {
                         type="text" 
                         className="bg-none border-[1px] border-black outline-none h-8 px-1 py-1 ml-1 text-sm rounded-md sm:w-[90%]" 
                         placeholder="City (optional)"
+                        disabled={!bankName}
                         onChange={(e) => {setCityName(e.target.value);}}
                         />
                         <button
-                        className="ml-1 h-8 bg-black text-white px-2 rounded-md"
+                        className="ml-1 h-8 bg-black text-white px-2 rounded-md disabled:pointer-events-none hover:bg-[#DCD6F7] hover:text-black border-2 border-black"
                         onClick={() => {document.getElementById('city-name').value = '';setCityName('')}}
                         disabled={!cityName}
-                        >X</button>
+                        ><strong>X</strong></button>
                     </div>
                 </div>
                 <div className="sm:w-[20%] lg:w-[20%] flex flex-wrap gap-1 justify-center">
                     <button 
-                    className="sm:px-1 lg:px-2 h-8 bg-black text-white mr-[2px] sm:text-sm lg:text-md rounded-md sm:w-20 lg:w-auto"
+                    className="sm:px-1 lg:px-2 h-8 bg-black text-white mr-[2px] sm:text-sm lg:text-md rounded-md sm:w-20 lg:w-auto disabled:pointer-events-none hover:bg-[#DCD6F7] hover:text-black border-2 border-black"
                     onClick={handleBankDetails}
                     disabled={loading || !bankName}
                     >Search</button> 
                     <button 
-                    className="sm:px-1 lg:px-2 h-8 bg-black text-white mr-[2px] sm:text-sm lg:text-md rounded-md sm:w-20 lg:w-auto"
+                    className="sm:px-1 lg:px-2 h-8 bg-black text-white mr-[2px] sm:text-sm lg:text-md rounded-md sm:w-20 lg:w-auto disabled:pointer-events-none hover:bg-[#DCD6F7] hover:text-black border-2 border-black"
                     onClick={handleReset}
                     >R</button>
                 </div>
@@ -141,6 +142,7 @@ export default function BankInfo() {
                     <p><strong>BANK: </strong>{bank.BANK}</p>
                     <p><strong>BRANCH: </strong>{bank.BRANCH}</p>
                     <p><strong>ADDRESS: </strong>{bank.ADDRESS}</p>
+                    <p><strong>CONTACT: </strong>{bank.CONTACT}</p>
                     <p><strong>DISTRICT: </strong>{bank.DISTRICT}</p>
                     <p><strong>STATE: </strong>{bank.STATE}</p>
                     <p><strong>ISO 3166: </strong>{bank.ISO3166}</p>
@@ -149,7 +151,7 @@ export default function BankInfo() {
                     <p><strong>IMPS: </strong>{bank.IMPS ? "Yes" : "No"}</p>
                     <div className="w-[100%] flex justify-center items-center">
                         <button 
-                        className="w-36 px-2 py-2 bg-black text-white rounded-lg"
+                        className="w-36 px-2 py-2 bg-black text-white rounded-lg disabled:pointer-events-none hover:bg-[#DCD6F7] hover:text-black border-2 border-black"
                         onClick={() => {
                             handleBranchCoordinates(bank.ADDRESS.replace(/[/#]/g, " "));
                             setAddress(bank.ADDRESS);
@@ -157,10 +159,10 @@ export default function BankInfo() {
                         >View In Map</button>
                     </div>
                 </div>))}
-                {!loading && bankDetails.length > 0 && 
+                {!loading && bankDetails.length > 0 && bankCount > 50 &&
                 (<div className="flex gap-1 text-lg">
                     <button 
-                    className="bg-black text-white px-2 py-1 rounded-md"
+                    className="bg-black text-white px-2 py-1 rounded-md disabled:pointer-events-none hover:bg-[#DCD6F7] hover:text-black border-2 border-black"
                     onClick={() => {
                         if (pageNo > 1) setPageNo(pageNo-1)
                         setStart(start-50)
@@ -170,7 +172,7 @@ export default function BankInfo() {
                     >{`<<<`}</button>
                     <p className="border-2 border-black px-2 py-1 rounded-md">{pageNo}</p>
                     <button 
-                    className="bg-black text-white px-2 py-1 rounded-md"
+                    className="bg-black text-white px-2 py-1 rounded-md disabled:pointer-events-none hover:bg-[#DCD6F7] hover:text-black border-2 border-black"
                     onClick={() => {
                         if (pageNo <= bankCount/50) setPageNo(pageNo+1) 
                         setStart(start+50)
