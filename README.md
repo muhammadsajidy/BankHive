@@ -74,14 +74,6 @@ The application provides an interactive interface to search and view branch deta
 3. Explore the **About** page for more information on the project.
 4. Visit the **API** page to understand how to interact with the backend programmatically.
 
-## API Documentation
-The API exposes endpoints for accessing bank and branch data. Below is an overview:
-
-### Endpoints
-1. `GET /banks/{bank_name}` - Fetch a list of all branches of the given bank along with the number of branches across India.
-2. `GET /banks/{bank_name}/{city_name}` - Fetch branches of a bank located in a specified city along with the number of branches in the city.
-4. `GET /location/{address}` - Fetch coordinates of a branch's address.
-
 ## Future Enhancements
 - User authentication for personalized experiences.
 - Advanced filtering options, like filtering using IFSC code.
