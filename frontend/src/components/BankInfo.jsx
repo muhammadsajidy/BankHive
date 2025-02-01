@@ -96,7 +96,7 @@ export default function BankInfo() {
                         type="text" 
                         className="bg-none border-[1px] border-black outline-none h-8 px-1 py-1 ml-1 text-sm rounded-md sm:w-[90%]" 
                         placeholder="City (optional)"
-                        disabled={!bankName}
+                        disabled={!bankName || (bankName && pageNo > 1)}
                         onChange={(e) => {setCityName(e.target.value);}}
                         />
                         <button

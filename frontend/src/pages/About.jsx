@@ -4,7 +4,7 @@
 export default function About() {
     return (
         <div className="w-screen h-screen font-raleway overflow-x-hidden bg-transparent">
-            <div className="mx-auto w-[75%] mb-8 sm:mt-[90px] lg:mt-20 flex flex-col items-center text-[#424874]">
+            <div className="mx-auto sm:w-[90%] lg:w-[75%] px-4 py-2 rounded-md mb-8 sm:mt-[90px] lg:mt-20 flex flex-col items-center text-white sm:bg-gradient-to-r sm:from-left-dark-blue sm:to-right-dark-blue lg:bg-none">
                 <h1 className="font-semibold sm:text-2xl lg:text-4xl">About BankHive</h1>
                 <p className="mt-3 sm:text-md lg:text-lg lg:w-[80%]">Welcome to BankHive, your one-stop solution for accessing detailed information about banks across India. Whether you're looking for branch locations, IFSC codes, contact numbers, or other essential banking details, BankHive makes it simple and efficient to find what you need.</p>
                 <p className="mt-3 sm:text-md lg:text-lg lg:w-[80%]">Our platform supports a wide range of Indian banks, including trusted names like Canara Bank, State Bank of India, and many more. With a user-friendly interface and powerful tools, BankHive ensures you can quickly access accurate and up-to-date information to meet your financial needs.</p>

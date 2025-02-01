@@ -38,9 +38,9 @@ export default function HeroSection() {
     }
 
     return (
-        <div className="h-screen w-screen font-raleway flex sm:flex-col lg:flex-row sm:justify-center sm:items-center text-[#424874]">
+        <div className="h-screen w-screen font-raleway flex sm:flex-col lg:flex-row sm:justify-center sm:items-center">
             <div className="sm:w-[85%] lg:w-[40%] sm:mt-[90px] lg:mt-0 h-screen flex lg:justify-center items-center">
-                <div className="w-[100%] px-5">
+                <div className="w-[100%] px-5 text-white">
                     <h1 className="sm:text-5xl lg:text-6xl font-bold">Welcome to BankHive</h1>
                     <p className="my-5 sm:text-md lg:text-lg">Discover detailed information about 50+ Indian banks, including industry leaders like Canara Bank, SBI, and more. Access branch details, addresses, and locations effortlessly—all in one place!</p>
                     <div className="w-[100%] flex flex-col items-center">
@@ -49,7 +49,7 @@ export default function HeroSection() {
                     </div>
                 </div>
             </div>
-            <div className="sm:w-[85%] lg:w-[55%] h-screen flex flex-col lg:justify-center items-center sm:pt-10">
+            <div className="sm:w-[85%] lg:w-[40%] h-screen flex flex-col lg:justify-center items-center sm:pt-10">
                 <div className="sm:w-[90%] h-14 lg:w-[70%] bg-white border-black border-[1.2px] rounded-md flex justify-between shadow-[3px_5px_0px_#000000]">
                     <input 
                     id='bank-name'
@@ -63,32 +63,25 @@ export default function HeroSection() {
                     onClick={handleBankDetails}
                     disabled={loading}
                     >Search</button>
+                    <button 
+                    className="hover:bg-black hover:text-white px-2 py-1 rounded"
+                    onClick={handleReset}
+                    disabled={!bankName}
+                    >Clear</button>
                 </div>
                 {loading && !error &&
                 <>
                     <div
-                        className="mt-10 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                        className="mt-10 inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-white border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
                         role="status">
                         <span
                         className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
                         >Loading...</span>
                     </div>
-                    <p className="mt-3">Fetching Bank Details</p>
+                    <p className="mt-3 text-white">Fetching Bank Details</p>
                 </>}
                 {error ? (
-                    <div className="mt-10 flex flex-col items-center">
-                        <p>{error}</p>
-                        <button 
-                        className="mt-3 px-2 py-1 bg-black text-white"
-                        onClick={() => {
-                            setError('');
-                            setBankName('');
-                            document.getElementById('bank-name').value = '';
-                            setBankList([]);
-                            setLoading(false);
-                        }}
-                        >Clear</button>
-                    </div>
+                        <p className="mt-10 text-white">{error}</p>
                 ) : null}
                 {(bankList.length !== 0 && !loading) && !error &&
                 (<div className="mt-10 mb-10 sm:w-[90%] lg:w-[70%] max-h-60 overflow-y-auto scrollbar-hide bg-white border-[1.2px] border-black px-2 rounded-md shadow-[3px_5px_0px_#000000]">

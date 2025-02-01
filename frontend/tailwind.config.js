@@ -16,8 +16,12 @@ export default {
     },
     extend: {
       backgroundImage: {
-        "hero": "url('../src/assets/hero.jpg')",
+        "hero": "url('../src/assets/bg-big.jpg')",
         "heromobile": "url('../src/assets/heromobile.jpg')"
+      },
+      colors: {
+        'left-dark-blue': '#0a0c23',
+        'right-dark-blue': '#090c37'
       }
     },
   },
